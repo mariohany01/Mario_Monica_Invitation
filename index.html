@@ -485,10 +485,25 @@
   }
 
   @media (max-width: 560px) {
-    .countdown-grid { gap: 0; }
-    .countdown-unit { min-width: 70px; padding: 1.5rem 1rem; }
-    .countdown-unit + .countdown-unit { border-left: none; }
-  }
+      .countdown-grid { 
+        gap: 0; 
+        flex-wrap: nowrap; /* Forces all items to stay on one line */
+      }
+      .countdown-unit { 
+        min-width: 0; /* Allows the boxes to shrink and fit the screen */
+        flex: 1; /* Makes sure all 4 boxes take up equal space */
+        padding: 1.2rem 0.2rem; /* Reduces side padding to prevent overflow */
+      }
+      .countdown-unit + .countdown-unit { 
+        border-left: 1px solid rgba(201,169,110,0.3); /* Keeps the elegant divider lines */
+      }
+      .countdown-number {
+        font-size: 2.2rem; /* Scales down the numbers slightly for mobile */
+      }
+      .countdown-label {
+        letter-spacing: 0.2em; /* Reduces letter spacing so words like 'MINUTES' don't break */
+      }
+    }
 
   /* RSVP Section */
   .rsvp-section {
