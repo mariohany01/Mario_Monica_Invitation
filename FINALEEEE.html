@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mario & Monica — 3 June 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #f0ebe1;
+    --parchment: #e8e0d0;
+    --gold: #c9a96e;
+    --gold-light: #dfc08a;
+    --gold-dark: #a07840;
+    --warm-brown: #6b4f3a;
+    --text-dark: #3a2e22;
+    --text-mid: #6b5a45;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ======= PAGE 1: ENVELOPE ======= */
+  #page-envelope {
+    position: fixed;
+    inset: 0;
+    background: var(--cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    background-image: 
+      radial-gradient(ellipse at 30% 20%, rgba(201,169,110,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 80%, rgba(201,169,110,0.10) 0%, transparent 60%);
+  }
+
+  #page-envelope.hide {
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+  }
+
+  .envelope-hint {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold-dark);
+    letter-spacing: 0.15em;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.8s forwards;
+  }
+
+  .envelope-wrapper {
+    cursor: pointer;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.3s forwards;
+    transition: transform 0.4s ease;
+  }
+
+  .envelope-wrapper:hover {
+    transform: scale(1.03) translateY(-6px);
+  }
+
+  .envelope-wrapper:hover .envelope-glow {
+    opacity: 1;
+  }
+
+  .envelope-glow {
+    position: absolute;
+    inset: -20px;
+    border-radius: 8px;
+    background: radial-gradient(ellipse, rgba(201,169,110,0.25) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .envelope-img {
+    width: min(480px, 90vw);
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 20px 60px rgba(107,79,58,0.25));
+    border-radius: 4px;
+  }
+
+  .tap-label {
+    margin-top: 2rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 1.4s forwards;
+  }
+
+  .tap-label::before,
+  .tap-label::after {
+    content: '—';
+    margin: 0 0.75em;
+    opacity: 0.5;
+  }
+
+  /* ======= PAGE 2: INVITATION ======= */
+  #page-invitation {
+    min-height: 100vh;
+    background: var(--cream);
+  }
+
+  /* Hero Section */
+  .hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 5vh;
+  }
+
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    mask-image: linear-gradient(to top, transparent 0%, black 50%);
+    -webkit-mask-image: linear-gradient(to top, transparent 0%, black 50%);
+    opacity: 0;
+    transform: scale(1.05);
+    transition: opacity 1s ease 0.2s, transform 1.5s ease 0.2s;
+  }
+
+  .hero-img.visible {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--cream) 0%, rgba(240,235,225,0.3) 50%, rgba(240,235,225,0.1) 100%);
+    pointer-events: none;
+  }
+
+  .hero-text {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
+  }
+
+  .hero-text.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .names-display {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-weight: 300;
+    line-height: 0.9;
+    color: var(--text-dark);
+    letter-spacing: -0.01em;
+  }
+
+  .names-display em {
+    font-style: italic;
+    color: var(--gold-dark);
+  }
+
+  .ampersand {
+    font-size: 0.6em;
+    color: var(--gold);
+    vertical-align: middle;
+    margin: 0 0.15em;
+  }
+
+  .wedding-word {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .date-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: var(--text-mid);
+    margin-top: 1rem;
+    letter-spacing: 0.08em;
+  }
+
+  .scroll-cue {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.5;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  .scroll-cue span {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--gold-dark);
+    text-transform: uppercase;
+  }
+
+  .scroll-arrow {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  /* Divider */
+  .ornamental-divider {
+    text-align: center;
+    padding: 3rem 0 2rem;
+    color: var(--gold);
+    font-size: 1.4rem;
+    letter-spacing: 0.5em;
+    opacity: 0.7;
+  }
+
+  /* Event sections */
+  .events-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 2rem 6rem;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+  }
+
+  .section-header.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.6em;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-dark);
+    line-height: 1.1;
+  }
+
+  /* Event Cards */
+  .event-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-bottom: 4rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.9s ease;
+    border: 1px solid rgba(201,169,110,0.25);
+    overflow: hidden;
+  }
+
+  .event-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .event-card.reverse {
+    direction: rtl;
+  }
+
+  .event-card.reverse > * {
+    direction: ltr;
+  }
+
+  .event-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+  }
+
+  .event-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: var(--parchment);
+    transition: transform 0.6s ease;
+    padding: 1.5rem;
+  }
+
+  .event-card:hover .event-image-wrapper img {
+    transform: scale(1.03);
+  }
+
+  .event-info {
+    padding: 3rem 2.5rem;
+    background: var(--parchment);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  .event-info::before {
+    content: '';
+    position: absolute;
+    top: 2rem;
+    bottom: 2rem;
+    left: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+  }
+
+  .event-card.reverse .event-info::before {
+    left: auto;
+    right: 0;
+  }
+
+  .event-type {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.55em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .event-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text-dark);
+    margin-bottom: 1.2rem;
+  }
+
+  .event-detail {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    letter-spacing: 0.03em;
+  }
+
+  .event-detail-icon {
+    color: var(--gold);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--gold-dark);
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(160,120,64,0.3);
+    padding-bottom: 2px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+
+  .map-link:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  /* Footer */
+  .wedding-footer {
+    background: var(--text-dark);
+    color: var(--cream);
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .footer-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.05em;
+    color: var(--gold-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-date {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    color: rgba(201,169,110,0.6);
+    text-transform: uppercase;
+  }
+
+  .footer-heart {
+    color: var(--gold);
+    font-size: 1.2rem;
+    margin: 1.5rem 0;
+    opacity: 0.6;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(8px); }
+  }
+
+  /* Responsive */
+  @media (max-width: 680px) {
+    .event-card,
+    .event-card.reverse {
+      grid-template-columns: 1fr;
+      direction: ltr;
+    }
+    .event-info::before { display: none; }
+    .event-card.reverse .event-info::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: Envelope -->
+<div id="page-envelope" onclick="openInvitation()">
+  <p class="envelope-hint">You are cordially invited</p>
+  <div class="envelope-wrapper">
+    <div class="envelope-glow"></div>
+    <img class="envelope-img" src="envelope.png" alt="Wedding Invitation Envelope">  </div>
+  <p class="tap-label">Open Invitation</p>
+</div>
+
+<!-- PAGE 2: Invitation Details -->
+<div id="page-invitation">
+  <!-- Hero -->
+  <section class="hero">
+    <img class="hero-img" src="mario_monica.png" id="heroImg" alt="Mario and Monica">
+    <div class="hero-overlay"></div>
+    <div class="hero-text" id="heroText">
+      <span class="wedding-word">Wedding</span>
+      <div class="names-display">
+        <em>Mario</em>
+        <span class="ampersand">&</span>
+        <em>Monica</em>
+      </div>
+      <p class="date-line">Wednesday, 3rd of June · 2026</p>
+      <div class="scroll-cue">
+        <span>Scroll</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events -->
+  <div class="ornamental-divider">✦ &nbsp;&nbsp; ✦ &nbsp;&nbsp; ✦</div>
+
+  <div class="events-container">
+    <div class="section-header" id="secHeader">
+      <span class="section-eyebrow">Join us to celebrate</span>
+      <h2 class="section-title">The Details</h2>
+    </div>
+
+    <!-- Church -->
+    <div class="event-card" id="card1">
+      <div class="event-image-wrapper">
+        <img src="Church.png" alt="Church Illustration">
+      </div>
+      <div class="event-info">
+        <span class="event-type">Holy Matrimony</span>
+        <h3 class="event-name">Virgin Mary Cathedral<br>Coptic Catholic</h3>
+        <div class="event-detail">
+          <span class="event-detail-icon">◈</span>
+          <span>New Cairo</span>
+        </div>
+        <div class="event-detail">
+          <span class="event-detail-icon">◈</span>
+          <span>Wednesday, 3 June 2026</span>
+        </div>
+        <div class="event-detail">
+          <span class="event-detail-icon">◈</span>
+          <span>3:00 PM</span>
+        </div>
+        <a class="map-link" href="https://maps.app.goo.gl/FfYnrdPn49HUnmGt9?g_st=iw" target="_blank">
+          ↗ View on Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- Venue -->
+    <div class="event-card reverse" id="card2">
+      <div class="event-image-wrapper">
+        <img src="venue.png" alt="Venue Illustration">
+      </div>
+      <div class="event-info">
+        <span class="event-type">Wedding Reception</span>
+        <h3 class="event-name">Khan El Mansoria</h3>
+        <div class="event-detail">
+          <span class="event-detail-icon">◈</span>
+          <span>Cairo, Egypt</span>
+        </div>
+        <div class="event-detail">
+          <span class="event-detail-icon">◈</span>
+          <span>Wednesday, 3 June 2026</span>
+        </div>
+        <div class="event-detail">
+          <span class="event-detail-icon">◈</span>
+          <span>5:00 PM</span>
+        </div>
+        <a class="map-link" href="https://maps.app.goo.gl/snHuHMi91qVdMbsP6?g_st=iw" target="_blank">
+          ↗ View on Maps
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="wedding-footer">
+    <div class="footer-heart">♡</div>
+    <div class="footer-names">Mario & Monica</div>
+    <div class="footer-date">III · VI · MMXXVI</div>
+  </footer>
+</div>
+
+<script>
+  function openInvitation() {
+    const env = document.getElementById('page-envelope');
+    env.classList.add('hide');
+
+    setTimeout(() => {
+      env.style.display = 'none';
+      // trigger hero animations
+      document.getElementById('heroImg').classList.add('visible');
+      document.getElementById('heroText').classList.add('visible');
+      setupScrollObserver();
+    }, 800);
+  }
+
+  function setupScrollObserver() {
+    const targets = [
+      document.getElementById('secHeader'),
+      document.getElementById('card1'),
+      document.getElementById('card2'),
+    ];
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    targets.forEach(t => { if (t) observer.observe(t); });
+  }
+</script>
+
+</body>
+</html>
