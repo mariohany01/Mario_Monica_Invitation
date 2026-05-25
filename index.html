@@ -39,7 +39,7 @@
     justify-content: center;
     z-index: 100;
     transition: opacity 0.8s ease, transform 0.8s ease;
-    background-image: 
+    background-image:
       radial-gradient(ellipse at 30% 20%, rgba(201,169,110,0.12) 0%, transparent 60%),
       radial-gradient(ellipse at 70% 80%, rgba(201,169,110,0.10) 0%, transparent 60%);
   }
@@ -137,22 +137,22 @@
     height: 100%;
     object-fit: cover;
     object-position: center top;
-    mask-image: linear-gradient(to top, transparent 0%, black 50%);
-    -webkit-mask-image: linear-gradient(to top, transparent 0%, black 50%);
+    mask-image: linear-gradient(to top, transparent 0%, black 60%);
+    -webkit-mask-image: linear-gradient(to top, transparent 0%, black 60%);
     opacity: 0;
     transform: scale(1.05);
     transition: opacity 1s ease 0.2s, transform 1.5s ease 0.2s;
   }
 
   .hero-img.visible {
-    opacity: 0.85;
+    opacity: 1;
     transform: scale(1);
   }
 
   .hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, var(--cream) 0%, rgba(240,235,225,0.3) 50%, rgba(240,235,225,0.1) 100%);
+    background: linear-gradient(to top, var(--cream) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -409,6 +409,137 @@
     border-color: var(--gold);
   }
 
+  /* ======= COUNTDOWN ======= */
+  .countdown-section {
+    text-align: center;
+    padding: 0 2rem 6rem;
+    max-width: 780px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.9s ease;
+  }
+
+  .countdown-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .countdown-grid {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.2rem 2.8rem;
+    border: 1px solid rgba(201,169,110,0.3);
+    background: var(--parchment);
+    min-width: 130px;
+    position: relative;
+  }
+
+  .countdown-unit + .countdown-unit {
+    border-left: none;
+  }
+
+  .countdown-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: 300;
+    color: var(--gold-dark);
+    line-height: 1;
+    letter-spacing: 0.04em;
+    transition: transform 0.15s ease;
+  }
+
+  .countdown-number.tick {
+    transform: scale(1.08);
+  }
+
+  .countdown-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.5em;
+    color: var(--text-mid);
+    text-transform: uppercase;
+    margin-top: 0.7rem;
+  }
+
+  .countdown-done {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    color: var(--gold-dark);
+    letter-spacing: 0.05em;
+    padding: 2.5rem 1rem;
+    border: 1px solid rgba(201,169,110,0.3);
+    background: var(--parchment);
+    width: 100%;
+  }
+
+  @media (max-width: 560px) {
+    .countdown-grid { gap: 0; }
+    .countdown-unit { min-width: 70px; padding: 1.5rem 1rem; }
+    .countdown-unit + .countdown-unit { border-left: none; }
+  }
+
+  /* RSVP Section */
+  .rsvp-section {
+    text-align: center;
+    padding: 0 2rem 6rem;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.9s ease;
+  }
+
+  .rsvp-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .rsvp-star {
+    color: var(--gold);
+    font-size: 1.2rem;
+    margin: 1.5rem 0;
+  }
+
+  .rsvp-text {
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    color: var(--text-mid);
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+  }
+
+  .rsvp-button {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: var(--cream);
+    background: var(--gold-dark);
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 1.2rem 2.5rem;
+    border: 1px solid var(--gold-dark);
+    transition: all 0.4s ease;
+  }
+
+  .rsvp-button:hover {
+    background: transparent;
+    color: var(--gold-dark);
+  }
+
   /* Footer */
   .wedding-footer {
     background: var(--text-dark);
@@ -467,17 +598,19 @@
 </head>
 <body>
 
-<!-- PAGE 1: Envelope -->
+<!-- ======= PAGE 1: ENVELOPE ======= -->
 <div id="page-envelope" onclick="openInvitation()">
   <p class="envelope-hint">You are cordially invited</p>
   <div class="envelope-wrapper">
     <div class="envelope-glow"></div>
-    <img class="envelope-img" src="envelope.png" alt="Wedding Invitation Envelope">  </div>
+    <img class="envelope-img" src="envelope.png" alt="Wedding Invitation Envelope">
+  </div>
   <p class="tap-label">Open Invitation</p>
 </div>
 
-<!-- PAGE 2: Invitation Details -->
+<!-- ======= PAGE 2: INVITATION ======= -->
 <div id="page-invitation">
+
   <!-- Hero -->
   <section class="hero">
     <img class="hero-img" src="mario_monica.png" id="heroImg" alt="Mario and Monica">
@@ -497,16 +630,15 @@
     </div>
   </section>
 
-  <!-- Events -->
-  <div class="ornamental-divider">✦ &nbsp;&nbsp; ✦ &nbsp;&nbsp; ✦</div>
+  <div class="ornamental-divider">✦   ✦   ✦</div>
 
+  <!-- Event Details -->
   <div class="events-container">
     <div class="section-header" id="secHeader">
       <span class="section-eyebrow">Join us to celebrate</span>
       <h2 class="section-title">The Details</h2>
     </div>
 
-    <!-- Church -->
     <div class="event-card" id="card1">
       <div class="event-image-wrapper">
         <img src="Church.png" alt="Church Illustration">
@@ -532,7 +664,6 @@
       </div>
     </div>
 
-    <!-- Venue -->
     <div class="event-card reverse" id="card2">
       <div class="event-image-wrapper">
         <img src="venue.png" alt="Venue Illustration">
@@ -559,33 +690,73 @@
     </div>
   </div>
 
-  <!-- Footer -->
+  <div class="ornamental-divider">✦   ✦   ✦</div>
+
+  <!-- Countdown -->
+  <div class="countdown-section" id="countdownSection">
+    <span class="section-eyebrow">Time until we say</span>
+    <h2 class="section-title">I Do</h2>
+    <div class="rsvp-star">✦</div>
+    <div class="countdown-grid" id="countdownGrid">
+      <div class="countdown-unit">
+        <span class="countdown-number" id="cd-days">00</span>
+        <span class="countdown-label">Days</span>
+      </div>
+      <div class="countdown-unit">
+        <span class="countdown-number" id="cd-hours">00</span>
+        <span class="countdown-label">Hours</span>
+      </div>
+      <div class="countdown-unit">
+        <span class="countdown-number" id="cd-minutes">00</span>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <div class="countdown-unit">
+        <span class="countdown-number" id="cd-seconds">00</span>
+        <span class="countdown-label">Seconds</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ornamental-divider">✦   ✦   ✦</div>
+
+  <!-- RSVP -->
+  <div class="rsvp-section" id="rsvpSection">
+    <span class="section-eyebrow">We'd love to see you there</span>
+    <h2 class="section-title">RSVP</h2>
+    <div class="rsvp-star">✦</div>
+    <p class="rsvp-text">Kindly confirm your attendance by filling out the form below.</p>
+    <a href="https://mario_resr.me.com" target="_blank" class="rsvp-button">Confirm Attendance</a>
+  </div>
+
   <footer class="wedding-footer">
     <div class="footer-heart">♡</div>
     <div class="footer-names">Mario & Monica</div>
     <div class="footer-date">III · VI · MMXXVI</div>
   </footer>
+
 </div>
 
 <script>
+  /* ---- Envelope open ---- */
   function openInvitation() {
     const env = document.getElementById('page-envelope');
     env.classList.add('hide');
-
     setTimeout(() => {
       env.style.display = 'none';
-      // trigger hero animations
       document.getElementById('heroImg').classList.add('visible');
       document.getElementById('heroText').classList.add('visible');
       setupScrollObserver();
     }, 800);
   }
 
+  /* ---- Scroll reveal ---- */
   function setupScrollObserver() {
     const targets = [
       document.getElementById('secHeader'),
       document.getElementById('card1'),
       document.getElementById('card2'),
+      document.getElementById('countdownSection'),
+      document.getElementById('rsvpSection')
     ];
 
     const observer = new IntersectionObserver((entries) => {
@@ -595,11 +766,49 @@
           observer.unobserve(e.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.12 });
 
     targets.forEach(t => { if (t) observer.observe(t); });
   }
-</script>
 
+  /* ---- Countdown to 3 June 2026, 3:00 PM Cairo time (UTC+3) ---- */
+  const weddingDate = new Date('2026-06-03T15:00:00+03:00');
+
+  function updateCountdown() {
+    const now  = new Date();
+    const diff = weddingDate - now;
+
+    if (diff <= 0) {
+      document.getElementById('countdownGrid').innerHTML =
+        '<p class="countdown-done">Today is the day ✦</p>';
+      return;
+    }
+
+    const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const set = (id, val) => {
+      const el  = document.getElementById(id);
+      const str = String(val).padStart(2, '0');
+      if (el && el.textContent !== str) {
+        el.textContent = str;
+        el.classList.remove('tick');
+        void el.offsetWidth;          /* reflow to restart animation */
+        el.classList.add('tick');
+        setTimeout(() => el.classList.remove('tick'), 150);
+      }
+    };
+
+    set('cd-days',    days);
+    set('cd-hours',   hours);
+    set('cd-minutes', minutes);
+    set('cd-seconds', seconds);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
 </body>
 </html>
